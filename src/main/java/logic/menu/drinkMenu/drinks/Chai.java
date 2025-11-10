@@ -2,10 +2,10 @@ package logic.menu.drinkMenu.drinks;
 
 import logic.menu.Item;
 
-public class Chai implements Item, TeaPumps{
+public class Chai implements Item, TeaPumps {
     @Override
     public String description() {
-        return "Chai Latte";
+        return "Chai Latte + " + "\n\t " + pumps() + " chai pumps";
     }
 
     @Override

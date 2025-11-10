@@ -16,6 +16,7 @@ public class UserInterphase {
         System.out.println("""
                 1) New Order
                 0) exit""");
+        System.out.print("--> ");
         int choice = Integer.parseInt(scanner.nextLine());
         switch (choice) {
             case 1 -> mainMenu();
@@ -32,7 +33,8 @@ public class UserInterphase {
                     1) Add Drink
                     2) Add Pastries
                     3) view Cart
-                    0) Extit""");
+                    0) Exit""");
+            System.out.print("--> ");
             int choice = Integer.parseInt(scanner.nextLine());
             switch(choice){
                 case 1 -> addDrink();
@@ -58,6 +60,7 @@ public class UserInterphase {
             case 3 -> item = new Cappuccino();
             case 4 -> item = new Chai();
         }
+        System.out.println("Would you like to Cus");
     }
     public void addPastries(){
 
