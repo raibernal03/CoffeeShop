@@ -1,4 +1,4 @@
-package logic.milk;
+package logic.menu.drinkMenu.milk;
 
 public enum Milks {
     WHOLE("Whole Milk"), SOY("Soy Milk"), ALMOND("Almond Milk"), NONFAT("Non-Fat Milk");

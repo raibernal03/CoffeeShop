@@ -1,6 +1,6 @@
-package logic.Driks;
+package logic.menu;
 
-public interface Beverage {
+public interface Item {
     public abstract String description();
     public abstract double cost();
 }

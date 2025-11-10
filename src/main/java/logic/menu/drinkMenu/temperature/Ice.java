@@ -1,4 +1,4 @@
-package logic.temperature;
+package logic.menu.drinkMenu.temperature;
 
 public enum Ice {
     REGULAR("Regular Ice"),

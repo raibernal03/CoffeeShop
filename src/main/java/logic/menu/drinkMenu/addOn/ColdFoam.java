@@ -1,14 +1,14 @@
-package logic.addOn;
+package logic.menu.drinkMenu.addOn;
 
-import logic.Driks.Beverage;
-import logic.Driks.Decorator;
+import logic.menu.Item;
+import logic.menu.drinkMenu.drinks.Decorator;
 
 public class ColdFoam extends Decorator {
-    Beverage beverage;
+    Item item;
     Syrups syrups;
 
-    public ColdFoam(Beverage beverage, String choice) {
-        this.beverage = beverage;
+    public ColdFoam(Item item, String choice) {
+        this.item = item;
         try {
             this.syrups = Syrups.valueOf(choice);
         } catch (Exception e) {
@@ -18,11 +18,11 @@ public class ColdFoam extends Decorator {
 
     @Override
     public String description() {
-        return this.beverage.description() + " " + syrups.getDescription() + " cold foam";
+        return this.item.description() + "\n\t+1.00 " + syrups.getDescription();
     }
 
     @Override
     public double cost() {
-        return this.beverage.cost() + 1;
+        return this.item.cost() + 1;
     }
 }

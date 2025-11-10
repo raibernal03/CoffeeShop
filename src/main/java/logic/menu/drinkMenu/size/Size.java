@@ -1,9 +1,9 @@
-package logic.size;
+package logic.menu.drinkMenu.size;
 
 public enum Size {
-    SMALL("small"),
-    MEDIUM("medium"),
-    LARGE("large");
+    SMALL("Small"),
+    MEDIUM("Medium"),
+    LARGE("Large");
 
     private String size;
 

@@ -1,4 +1,4 @@
-package logic.addOn;
+package logic.menu.drinkMenu.addOn;
 
 public enum Syrups {
     /*

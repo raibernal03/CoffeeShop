@@ -1,9 +1,12 @@
-package logic.Driks;
+package logic.menu.drinkMenu.drinks;
 
-public class Matcha implements Beverage, TeaPumps{
+import logic.menu.Item;
+
+public class Matcha implements Item, TeaPumps {
     @Override
     public String description() {
-        return "Matcha Latte";
+        return "Matcha Latte"
+                + "\n\t" + pumps() + "matcha ";
     }
 
     @Override

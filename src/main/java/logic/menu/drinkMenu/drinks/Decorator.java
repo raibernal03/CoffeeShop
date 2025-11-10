@@ -1,6 +1,8 @@
-package logic.Driks;
+package logic.menu.drinkMenu.drinks;
 
-public abstract class Decorator implements Beverage {
+import logic.menu.Item;
+
+public abstract class Decorator implements Item {
     public abstract String description();
     public abstract double cost();
 }

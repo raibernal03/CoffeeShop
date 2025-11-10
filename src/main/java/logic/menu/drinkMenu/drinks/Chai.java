@@ -1,6 +1,8 @@
-package logic.Driks;
+package logic.menu.drinkMenu.drinks;
 
-public class Chai implements Beverage, TeaPumps{
+import logic.menu.Item;
+
+public class Chai implements Item, TeaPumps{
     @Override
     public String description() {
         return "Chai Latte";

@@ -1,6 +1,8 @@
-package logic.Driks;
+package logic.menu.drinkMenu.drinks;
 
-public class Cappuccino implements Beverage, EspressoShots {
+import logic.menu.Item;
+
+public class Cappuccino implements Item, EspressoShots {
     @Override
     public String description() {
         return "Cappuccino";

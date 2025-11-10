@@ -1,14 +1,14 @@
-package logic.temperature;
+package logic.menu.drinkMenu.temperature;
 
-import logic.Driks.Beverage;
-import logic.Driks.Decorator;
+import logic.menu.Item;
+import logic.menu.drinkMenu.drinks.Decorator;
 
 public class Iced extends Decorator {
-    Beverage beverage;
+    Item item;
     Ice ice;
 
-    public Iced(Beverage beverage, String choice) {
-        this.beverage = beverage;
+    public Iced(Item item, String choice) {
+        this.item = item;
         try {
             this.ice = Ice.valueOf(choice);
         } catch (Exception e) {
@@ -18,11 +18,11 @@ public class Iced extends Decorator {
 
     @Override
     public String description() {
-        return this.beverage.description() + " " + this.ice.getDescription();
+        return this.item.description() + "\n\t+0.00 " + this.ice.getDescription();
     }
 
     @Override
     public double cost() {
-        return 0;
+        return this.item.cost();
     }
 }
