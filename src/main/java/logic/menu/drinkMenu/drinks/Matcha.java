@@ -6,7 +6,7 @@ public class Matcha implements Item, TeaPumps {
     @Override
     public String description() {
         return "Matcha Latte"
-                + "\n\t+" + pumps() + " matcha scoops";
+                + "\n\t+" + " matcha scoops " + "(" + pumps() + ")";
     }
 
     @Override

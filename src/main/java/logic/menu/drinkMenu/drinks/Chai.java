@@ -5,7 +5,7 @@ import logic.menu.Item;
 public class Chai implements Item, TeaPumps {
     @Override
     public String description() {
-        return "Chai Latte + " + "\n\t " + pumps() + " chai pumps";
+        return "Chai Latte + " + "\n\t " + " chai pumps" + "(" + pumps() + ")";
     }
 
     @Override

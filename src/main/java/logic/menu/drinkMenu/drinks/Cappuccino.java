@@ -5,7 +5,8 @@ import logic.menu.Item;
 public class Cappuccino implements Item, EspressoShots {
     @Override
     public String description() {
-        return "Cappuccino";
+        return "Cappuccino (" +
+                espressoShots() + " espresso shots)";
     }
 
     @Override

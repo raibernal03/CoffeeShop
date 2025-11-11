@@ -19,7 +19,7 @@ public class MilkDecorator extends Decorator {
     @Override
     public String description() {
         return switch(this.milk){
-            case SOY, ALMOND -> this.item.description() + "\n\t+1.00 " + this.milk.getDescription() + "  1.00";
+            case SOY, ALMOND -> this.item.description() + "\n\t+1.00 " + this.milk.getDescription();
             case WHOLE, NONFAT -> this.item.description() + "\n\t+0.00 " + this.milk.getDescription();
         };
     }

@@ -18,7 +18,7 @@ public class ColdFoam extends Decorator {
 
     @Override
     public String description() {
-        return this.item.description() + "\n\t+1.00 " + syrups.getDescription();
+        return this.item.description() + "\n\t+1.00 " + syrups.getDescription() + " cold foam";
     }
 
     @Override
