@@ -14,8 +14,6 @@ import logic.menu.drinkMenu.size.SizeDecorator;
 import logic.menu.drinkMenu.temperature.Hot;
 import logic.menu.drinkMenu.temperature.Iced;
 import logic.menu.pastries.*;
-
-import java.util.List;
 import java.util.Scanner;
 
 public class UserInterphase {
@@ -24,20 +22,28 @@ public class UserInterphase {
     public void init() {
         System.out.println("=".repeat(100));
         System.out.println("Welcome to Galileo's Caffe");
-        System.out.println("""
-                1) New Order
-                0) exit""");
-        System.out.print("--> ");
-        int choice = Integer.parseInt(scanner.nextLine());
-        switch (choice) {
-            case 1 -> mainMenu();
-            case 0 -> System.exit(0);
+        System.out.print("Customer Name: ");
+        String customerName = scanner.nextLine();
+        boolean running = true;
+        while (running) {
+            System.out.println("""
+                    1) New Order
+                    0) exit""");
+            System.out.print("--> ");
+            try {
+                int choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
+                    case 1 -> mainMenu(customerName);
+                    case 0 -> System.exit(0);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number.");
+            }
         }
-
         System.out.println("=".repeat(100));
     }
 
-    public void mainMenu() {
+    public void mainMenu(String name) {
 
         boolean running = true;
         while (running) {
@@ -45,14 +51,19 @@ public class UserInterphase {
                     1) Add Drink
                     2) Add Pastries
                     3) View Cart
-                    0) Exit""");
+                    0) Back""");
             System.out.print("--> ");
-            int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1 -> addDrink();
-                case 2 -> addPastries();
-                case 3 -> viewCart();
-                case 0 -> running = false;
+            try {
+                int choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
+                    case 1 -> addDrink();
+                    case 2 -> addPastries();
+                    case 3 -> viewCart(name);
+                    case 0 -> running = false;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Invalid input! Please enter a number.");
             }
         }
     }
@@ -66,16 +77,26 @@ public class UserInterphase {
                 3) Cappuccino
                 4) Chai Latte""");
         System.out.print("--> ");
-        int choice = Integer.parseInt(scanner.nextLine());
-        switch (choice) {
-            case 1 -> item = new Matcha();
-            case 2 -> item = new Latte();
-            case 3 -> item = new Cappuccino();
-            case 4 -> item = new Chai();
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1 -> item = new Matcha();
+                case 2 -> item = new Latte();
+                case 3 -> item = new Cappuccino();
+                case 4 -> item = new Chai();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input! Please enter a number.");
+            addDrink();
         }
 
         item = defaultCustomization(item);
 
+        System.out.print("Add Ons (y/n): ");
+        String answer = scanner.nextLine().trim().toLowerCase();
+        if (answer.contains("y")) {
+            item = customizeDrink(item);
+        }
 
         System.out.println(item.description());
         System.out.print("Add to cart? ");
@@ -98,14 +119,19 @@ public class UserInterphase {
                     4) Croissant
                     0) Back""");
             System.out.print("--> ");
-            int choice = Integer.parseInt(scanner.nextLine().trim() );
-            switch (choice) {
-                case 1 -> pastries = warm(pastries = new Brownie(pastries));
-                case 2 -> pastries = warm(new Concha(pastries));
-                case 3 -> pastries = warm(new Cookie(pastries));
-                case 4 -> pastries = warm(new Crossaint(pastries));
-                case 0 -> running = false;
-                default -> System.out.println("INVALID CHOICE");
+            try {
+                int choice = Integer.parseInt(scanner.nextLine().trim());
+                switch (choice) {
+                    case 1 -> pastries = warm(pastries = new Brownie(pastries));
+                    case 2 -> pastries = warm(new Concha(pastries));
+                    case 3 -> pastries = warm(new Cookie(pastries));
+                    case 4 -> pastries = warm(new Crossaint(pastries));
+                    case 0 -> running = false;
+                    default -> System.out.println("INVALID CHOICE");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number.");
+                addPastries();
             }
 
         }
@@ -113,26 +139,31 @@ public class UserInterphase {
     }
     // warm pastrie
 
-    public Item warm(Item pastries){
+    public Item warm(Item pastries) {
         System.out.print("Would you like it warmed? ");
         String warmed = scanner.nextLine().trim();
 
 
-        if (warmed.equalsIgnoreCase("yes")){
+        if (warmed.equalsIgnoreCase("yes")) {
             pastries = new Warmed(pastries);
         }
 
         System.out.println(pastries.description());
         System.out.print("Add to cart? ");
-        String addToCart = scanner.nextLine();
-        if (addToCart.equalsIgnoreCase("yes")) {
-            OrderManager.saveCart(pastries);
+        try {
+            String addToCart = scanner.nextLine();
+            if (addToCart.equalsIgnoreCase("yes")) {
+                OrderManager.saveCart(pastries);
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid input! Please enter a number.");
+            warm(pastries);
         }
         return pastries;
     }
 
 
-    public void viewCart() {
+    public void viewCart(String customerName) {
         //people.stream().forEach(x -> System.out.println(x.toString()));
         var count = OrderManager.cart.stream()
                 .count();
@@ -155,48 +186,43 @@ public class UserInterphase {
 
 
         System.out.println("""
-               1) Check Out
-               2) Remove Item
-               3) Back""");
+                1) Check Out
+                2) Remove Item
+                3) Back""");
         System.out.print("--> ");
-        int choice = Integer.parseInt(scanner.nextLine());
-        switch(choice){
-            case 1:
-                FileManager.checkOut(OrderManager.cart);
-                OrderManager.cart = null;
-                break;
-            case 2:
-                System.out.print("Enter item number: ");
-                int num = Integer.parseInt(scanner.nextLine());
-                OrderManager.removeItem(num);
-                break;
-            default :
-                System.out.println("Invalid Choice!");
-                break;
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    FileManager.checkOut(OrderManager.cart, customerName);
+                    OrderManager.cart = null;
+                    break;
+                case 2:
+                    System.out.print("Enter item number: ");
+                    int num = Integer.parseInt(scanner.nextLine());
+                    OrderManager.removeItem(num);
+                    break;
+                default:
+                    System.out.println("Invalid Choice!");
+                    break;
+            }
+            System.out.println("=".repeat(50));
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input! Please enter a number.");
+            viewCart(customerName);
         }
-        System.out.println("=".repeat(50));
     }
 
     //default customization
     public Item defaultCustomization(Item item) {
-        System.out.println("""
-                Size
-                1) Small
-                2) Medium
-                3) Large""");
-        System.out.print("--> ");
-        int choice = Integer.parseInt(scanner.nextLine());
-        item = customizeSize(choice, item);
-        System.out.println("""
-                Milk Options:
-                1) Whole Milk
-                2) Non-Fat Milk
-                3) Soy Milk + $1.00
-                4) Almond Milk + $1.00""");
-        System.out.print("--> ");
-        choice = Integer.parseInt(scanner.nextLine());
-        item = customizeMilk(choice, item);
+        item = customizeTemp(item);
+        item = customizeSize(item);
+        item = customizeMilk(item);
+        return item;
+    }
 
+    //customize temperature
+    public Item customizeTemp( Item item) {
         System.out.println("""
                 Choose One:
                 1) Hot
@@ -205,32 +231,67 @@ public class UserInterphase {
                 4) Easy Ice
                 5) No Ice""");
         System.out.print("--> ");
-        choice = Integer.parseInt(scanner.nextLine());
-        item = customizeTemp(choice, item);
-        item = customizeDrink(item);
-
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            return switch (choice) {
+                case 1 -> new Hot(item);
+                case 2 -> new Iced(item, "REGULAR");
+                case 3 -> new Iced(item, "EXTRA");
+                case 4 -> new Iced(item, "EASY");
+                case 5 -> new Iced(item, "NOICE");
+                default -> new Hot(item);
+            };
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input! Please enter a number.");
+            customizeTemp(item);
+        }
         return item;
-
-
     }
 
     //customize size
-    public Item customizeSize(int choice, Item item) {
-        return switch (choice) {
-            case 2 -> item = new SizeDecorator(item, "MEDIUM");
-            case 3 -> item = new SizeDecorator(item, "LARGE");
-            default -> item = new SizeDecorator(item, "SMALL");
-        };
+    public Item customizeSize(Item item) {
+        System.out.println("""
+                Size
+                1) Small
+                2) Medium
+                3) Large""");
+        System.out.print("--> ");
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            return switch (choice) {
+                case 2 -> item = new SizeDecorator(item, "MEDIUM");
+                case 3 -> item = new SizeDecorator(item, "LARGE");
+                default -> item = new SizeDecorator(item, "SMALL");
+            };
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input! Please enter a number.");
+            customizeSize(item);
+        }
+        return item;
     }
 
     //customize milk
-    public Item customizeMilk(int choice, Item item) {
-        return switch (choice) {
-            case 2 -> item = new MilkDecorator(item, "NONFAT");
-            case 3 -> item = new MilkDecorator(item, "SOY");
-            case 4 -> item = new MilkDecorator(item, "ALMOND");
-            default -> item = new MilkDecorator(item, "WHOLE");
-        };
+    public Item customizeMilk(Item item) {
+        System.out.println("""
+                Milk Options:
+                1) Whole Milk
+                2) Non-Fat Milk
+                3) Soy Milk + $1.00
+                4) Almond Milk + $1.00""");
+        System.out.print("--> ");
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            return switch (choice) {
+                case 2 -> item = new MilkDecorator(item, "NONFAT");
+                case 3 -> item = new MilkDecorator(item, "SOY");
+                case 4 -> item = new MilkDecorator(item, "ALMOND");
+                default -> item = new MilkDecorator(item, "WHOLE");
+            };
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input! Please enter a number.");
+            customizeMilk(item);
+        }
+        return item;
     }
 
     //Customize Drink
@@ -243,13 +304,18 @@ public class UserInterphase {
                     3) And more Espresso
                     0) Back""");
             System.out.print("--> ");
-            int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1 -> item = customizeSyrup(item);
-                case 2 -> item = customizeColdFoam(item);
-                case 3 -> item = new Espresso(item);
-                case 0 -> running = false;
-                default -> System.out.println("Invalid choice");
+            try {
+                int choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
+                    case 1 -> item = customizeSyrup(item);
+                    case 2 -> item = customizeColdFoam(item);
+                    case 3 -> item = new Espresso(item);
+                    case 0 -> running = false;
+                    default -> System.out.println("Invalid choice");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number.");
+                customizeDrink(item);
             }
         }
 
@@ -272,26 +338,32 @@ public class UserInterphase {
                 9) Caramel
                 0) Back""");
         System.out.print("--> ");
-        int choice = Integer.parseInt(scanner.nextLine().trim());
-        return switch (choice) {
-            case 1 -> item = new AddSyrup(item, "HONEY");
-            case 2 -> item = new AddSyrup(item, "LAVENDER");
-            case 3 -> item = new AddSyrup(item, "LECHERA");
-            case 4 -> item = new AddSyrup(item, "ROSE");
-            case 5 -> item = new AddSyrup(item, "VANILLA");
-            case 6 -> item = new AddSyrup(item, "CHOCOLATE");
-            case 7 -> item = new AddSyrup(item, "STRAWBERRY");
-            case 8 -> item = new AddSyrup(item, "HAZELNUT");
-            case 9 -> item = new AddSyrup(item, "CARAMEL");
-            default -> item;
-        };
+        try {
+            int choice = Integer.parseInt(scanner.nextLine().trim());
+            return switch (choice) {
+                case 1 -> item = new AddSyrup(item, "HONEY");
+                case 2 -> item = new AddSyrup(item, "LAVENDER");
+                case 3 -> item = new AddSyrup(item, "LECHERA");
+                case 4 -> item = new AddSyrup(item, "ROSE");
+                case 5 -> item = new AddSyrup(item, "VANILLA");
+                case 6 -> item = new AddSyrup(item, "CHOCOLATE");
+                case 7 -> item = new AddSyrup(item, "STRAWBERRY");
+                case 8 -> item = new AddSyrup(item, "HAZELNUT");
+                case 9 -> item = new AddSyrup(item, "CARAMEL");
+                default -> item;
+            };
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input! Please enter a number.");
+            customizeSyrup(item);
+        }
+        return item;
     }
 
     //customized cold foam
     public Item customizeColdFoam(Item item) {
         System.out.println("""
                 Cold Foam Flavors
-                 1) Honey
+                1) Honey
                 2) Lavender
                 3) Lechera
                 4) Rose
@@ -302,32 +374,27 @@ public class UserInterphase {
                 9) Caramel
                 0) Back""");
         System.out.print("--> ");
-        int choice = Integer.parseInt(scanner.nextLine());
-        return switch (choice) {
-            case 1 -> item = new ColdFoam(item, "HONEY");
-            case 2 -> item = new ColdFoam(item, "LAVENDER");
-            case 3 -> item = new ColdFoam(item, "LECHERA");
-            case 4 -> item = new ColdFoam(item, "ROSE");
-            case 5 -> item = new ColdFoam(item, "VANILLA");
-            case 6 -> item = new ColdFoam(item, "CHOCOLATE");
-            case 7 -> item = new ColdFoam(item, "STRAWBERRY");
-            case 8 -> item = new ColdFoam(item, "HAZELNUT");
-            case 9 -> item = new ColdFoam(item, "CARAMEL");
-            default -> item;
-        };
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            return switch (choice) {
+                case 1 -> item = new ColdFoam(item, "HONEY");
+                case 2 -> item = new ColdFoam(item, "LAVENDER");
+                case 3 -> item = new ColdFoam(item, "LECHERA");
+                case 4 -> item = new ColdFoam(item, "ROSE");
+                case 5 -> item = new ColdFoam(item, "VANILLA");
+                case 6 -> item = new ColdFoam(item, "CHOCOLATE");
+                case 7 -> item = new ColdFoam(item, "STRAWBERRY");
+                case 8 -> item = new ColdFoam(item, "HAZELNUT");
+                case 9 -> item = new ColdFoam(item, "CARAMEL");
+                default -> item;
+            };
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input! Please enter a number.");
+            customizeColdFoam(item);
+        }
+        return item;
     }
 
-    //customize temperature
-    public Item customizeTemp(int choice, Item item){
-        return switch (choice) {
-            case 1 -> new Hot(item);
-            case 2 -> new Iced(item, "REGULAR");
-            case 3 -> new Iced(item, "EXTRA");
-            case 4 -> new Iced(item, "EASY");
-            case 5 -> new Iced(item, "NOICE");
-            default -> new Hot(item);
-        };
-    }
 
 
 }

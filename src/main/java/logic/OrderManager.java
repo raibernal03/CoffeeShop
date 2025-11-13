@@ -20,8 +20,8 @@ public class OrderManager {
     }
 
     //check out
-    public static void checkOut(){
-        FileManager.checkOut(cart);
+    public static void checkOut(String name){
+        FileManager.checkOut(cart, name);
         //cart.stream().forEach(item -> cart.remove(item));
     }
 }

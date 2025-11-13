@@ -16,13 +16,15 @@ public class FileManager {
             DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
 
-    public static void checkOut(List<Item> cart) {
+    public static void checkOut(List<Item> cart, String name) {
         String fileName = FILE_TS.format(LocalDateTime.now())+".txt";
         String filePath = "src/main/receipts/" + fileName;
         try {
             FileWriter fw = new FileWriter(filePath, true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write("Galileo's Coffee Shop 😸☕\n");
+            bw.write("Customer Name: " + name + "\n");
+
             var count = cart.stream()
                             .count();
             bw.write(String.format("Items count: %d\n", count));

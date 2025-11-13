@@ -1,0 +1,13 @@
+Galileo's Coffee Shop 😸☕
+Customer Name: Ares
+Items count: 1
+-------------------------
+$7.45 - Matcha Latte
+	+ matcha scoops (2)
+	+1.00 Almond Milk
+	+0.50 Rose
+	+1.00 Chocolate cold foam
+-------------------------
+Total cost: $7.45
+
+Thank You for Visiting Us? 😸☕🍵

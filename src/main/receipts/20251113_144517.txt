@@ -1,12 +1,10 @@
 Galileo's Coffee Shop 😸☕
+Customer Name: Galileo
 Items count: 1
 -------------------------
-$4.95 - Matcha Latte
-	+ matcha scoops (2)
-	+4.95 Small
-	+0.00 Whole Milk
-	+ hot
+$2.50 - Brownie
+	+warmed
 -------------------------
-Total cost: $4.95
+Total cost: $2.50
 
 Thank You for Visiting Us? 😸☕🍵
