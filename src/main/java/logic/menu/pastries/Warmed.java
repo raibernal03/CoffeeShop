@@ -12,7 +12,7 @@ public class Warmed extends Decorator {
 
     @Override
     public String description() {
-        return item.description() +"\n\t+Warmed";
+        return item.description() +"\n\t+warmed";
     }
 
     @Override

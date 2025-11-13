@@ -3,6 +3,12 @@ package logic.menu.pastries;
 import logic.menu.Item;
 
 public class Cookie implements Item {
+    Item item;
+
+    public Cookie(Item item) {
+        this.item = item;
+    }
+
     @Override
     public String description() {
         return "Cookie";

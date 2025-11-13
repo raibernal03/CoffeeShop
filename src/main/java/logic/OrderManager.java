@@ -1,22 +1,27 @@
 package logic;
 
+import logic.fileManager.FileManager;
 import logic.menu.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderManager {
-    List<Item> cart = new ArrayList<>();
+    static List<Item> cart = new ArrayList<>();
 
     //save to cart
-    public void saveCart(Item item){
+    public static void saveCart(Item item){
         cart.add(item);
     }
 
     //remove from cart
-    public void removeItem(Item item){
-        cart.remove(item);
+    public static void removeItem(int index){
+        cart.remove(index);
     }
 
-    //save
+    //check out
+    public static void checkOut(){
+        FileManager.checkOut(cart);
+        //cart.stream().forEach(item -> cart.remove(item));
+    }
 }
