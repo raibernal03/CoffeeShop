@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainMenuGUI  extends JFrame {
-    ;
+
     JTextArea textArea;
     JButton newOrderButton, addDrinkButton, addPastryButton, checkoutButton, backButton, viewCartButton;
     MainMenuGUI() {
